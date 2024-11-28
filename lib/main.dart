@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_appauth/flutter_appauth.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -7,15 +6,17 @@ void main() {
   runApp(const MyApp());
 }
 
-const String clientId = 'HzqaJiaRQWDGRrvQ6B9dlCbVAxaIhswf';
-const String clinentSecret =
-    '_V5V01pqn8v2sd4i7LrmqN05H8Z6JHyZ1KJOrM5vmAYenPMYiD0u5_uULV9GCkmt';
-const String redirectUri =
-    'auth.sample.app.authSampleApp://dev-sqnvrmu6wzlyxszz.us.auth0.com/ios/auth.sample.app.authSampleApp/callback';
+const String clientId = 'cBtYd9ejKr2UHWmvSQTJpHMcsfc0vLdD';
+const String clientSecret =
+    'LcIHprIN0JElAfqD3_nA2xoi4oAPXI1EVgVpGJqSRhjxZ9XEY54Gnuhbppz_1J45';
 const String authorizationEndpoint =
     'https://dev-sqnvrmu6wzlyxszz.us.auth0.com/authorize';
 const String tokenEndpoint =
     'https://dev-sqnvrmu6wzlyxszz.us.auth0.com/oauth/token';
+
+// const String redirectUri = 'https://flutter.dev';
+const String redirectUri = 'authsample://test/callback';
+
 const List<String> scopes = ['openid', 'profile', 'email', 'offline_access'];
 
 class MyApp extends StatelessWidget {
@@ -61,13 +62,13 @@ class MyHomePage extends HookWidget {
               },
               child: const Text('auth0 login'),
             ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                _logout();
-              },
-              child: const Text('auth0 logout'),
-            ),
+            // const SizedBox(height: 20),
+            // ElevatedButton(
+            //   onPressed: () async {
+            //     await _logout();
+            //   },
+            //   child: const Text('auth0 logout'),
+            // ),
             const SizedBox(height: 20),
             const Text(
               'Access token:',
@@ -98,7 +99,7 @@ Future _login() async {
       AuthorizationTokenRequest(
         clientId,
         redirectUri,
-        clientSecret: clinentSecret,
+        clientSecret: clientSecret,
         // promptValues: ['login'],
         serviceConfiguration: const AuthorizationServiceConfiguration(
           authorizationEndpoint: authorizationEndpoint,
@@ -111,7 +112,8 @@ Future _login() async {
     );
 
     if (result != null) {
-      print('Access token: ${result.accessToken}');
+      debugPrint('Access token: ${result.accessToken}\n');
+      debugPrint('Refresh token: ${result.refreshToken}\n');
       return {
         'accessToken': result.accessToken,
         'refreshToken': result.refreshToken
@@ -123,13 +125,13 @@ Future _login() async {
   }
 }
 
-Future<void> _logout() async {
-  final dio = Dio();
-  try {
-    final response = dio.get(
-        'https://dev-sqnvrmu6wzlyxszz.us.auth0.com/v2/logout?cliten_id=$clientId');
-    print('logout response: ${response}');
-  } catch (e) {
-    print('logout error: $e');
-  }
-}
+// Future<void> _logout() async {
+//   final dio = Dio();
+//   try {
+//     final response = dio.get(
+//         'https://dev-sqnvrmu6wzlyxszz.us.auth0.com/v2/logout?cliten_id=$clientId');
+//     print('logout response: ${response}');
+//   } catch (e) {
+//     print('logout error: $e');
+//   }
+// }
